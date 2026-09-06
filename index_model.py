@@ -63,9 +63,10 @@ class BISDomain54Index:
 
 
 if __name__ == "__main__":
-    base_dir = Path.home() / "Desktop" / "BIS_Domain54"
+    base_dir = Path(__file__).resolve().parent
     corpus_json = base_dir / "corpus_chunks.json"
     output_index = base_dir / "corpus_index.pkl"
 
     indexer = BISDomain54Index()
     indexer.train_and_index(corpus_json, output_index)
+

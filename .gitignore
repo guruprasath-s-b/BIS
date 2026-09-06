@@ -11,3 +11,15 @@ __pycache__/
 # OS Files
 .DS_Store
 Thumbs.db
+
+# Local credentials
+.env
+.env.*
+!.env.example
+benchmark-results.json
+
+.idea/
+*.zip
+
+.idea/
+*.zip

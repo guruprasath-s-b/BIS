@@ -4,7 +4,7 @@ from rag_engine import BISRAGEngine
 
 
 def run_benchmark_tests():
-    base_dir = Path.home() / "Desktop" / "BIS_Domain54"
+    base_dir = Path(__file__).resolve().parent
     index_path = base_dir / "corpus_index.pkl"
 
     if not index_path.exists():

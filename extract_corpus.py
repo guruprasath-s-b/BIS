@@ -115,7 +115,7 @@ def extract_all_documents(pdf_dir: Path, output_file: Path):
 
 
 if __name__ == "__main__":
-    base_dir = Path.home() / "Desktop" / "BIS_Domain54"
+    base_dir = Path(__file__).resolve().parent
     pdf_dir = base_dir / "PDFs"
     output_json = base_dir / "corpus_chunks.json"
     extract_all_documents(pdf_dir, output_json)

@@ -4,7 +4,7 @@ from rag_engine import BISRAGEngine
 
 
 def main():
-    base_dir = Path.home() / "Desktop" / "BIS_Domain54"
+    base_dir = Path(__file__).resolve().parent
     index_path = base_dir / "corpus_index.pkl"
 
     if not index_path.exists():
@@ -33,15 +33,17 @@ def main():
 
             print("\n" + "-" * 70)
             print(f"TOP DOCUMENT : {result.get('top_document', 'N/A')} - {result.get('top_title', '')}")
-            print(f"CONFIDENCE   : {int(result['confidence'] * 100)}%")
+            print(f"MODE / ROUTE : {result['mode']} / {result['route']}")
             print(f"PAGE REF     : Page {result.get('primary_page', 'N/A')}")
             print("-" * 70)
             print(f"ANSWER:\n{result['answer']}\n")
             print("CITATIONS:")
             for cite in result["citations"]:
-                print(f"  • {cite}")
+                print(f"  • [{cite['id']}] {cite['title']} — {cite['url']}")
             print("-" * 70 + "\n")
 
+        except ValueError as error:
+            print(str(error))
         except (KeyboardInterrupt, EOFError):
             print("\nSession ended.")
             break
