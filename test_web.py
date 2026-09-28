@@ -65,6 +65,25 @@ class WebTests(unittest.TestCase):
         self.assertEqual(status, 200)
         self.assertEqual(len(result['documents']), 54)
 
+    def test_health_reports_unavailable_engine(self):
+        with patch.object(web_server, 'ENGINE', None):
+            status, result = self.request('/api/health')
+        self.assertEqual(status, 503)
+        self.assertEqual(result['status'], 'unavailable')
+        self.assertFalse(result['ready'])
+        self.assertIsNone(result['mode'])
+
+    def test_health_reports_ready_engine_mode(self):
+        for enabled, mode in [(False, 'local'), (True, 'openai')]:
+            with self.subTest(mode=mode), patch.object(web_server.ENGINE.client, 'enabled', enabled):
+                status, result = self.request('/api/health')
+                self.assertEqual(status, 200)
+                self.assertEqual(result['status'], 'ok')
+                self.assertTrue(result['ready'])
+                self.assertEqual(result['mode'], mode)
+                self.assertIn('en', result['languages'])
+                self.assertEqual(result['knowledge_reviewed_on'], web_server.REVIEWED)
+
     def test_error_state(self):
         with patch.object(web_server.ENGINE, 'answer_question', side_effect=RuntimeError):
             self.assertEqual(self.request('/api/ask', {'query': 'surgical tools'})[0], 500)

@@ -34,7 +34,15 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         path = unquote(urlparse(self.path).path)
         if path == '/api/health':
-            return self.respond({'status': 'ok', 'mode': 'openai' if ENGINE and ENGINE.client.enabled else 'local', 'languages': LANGUAGES, 'knowledge_reviewed_on': REVIEWED})
+            ready = ENGINE is not None
+            mode = ('openai' if ENGINE.client.enabled else 'local') if ready else None
+            return self.respond({
+                'status': 'ok' if ready else 'unavailable',
+                'ready': ready,
+                'mode': mode,
+                'languages': LANGUAGES,
+                'knowledge_reviewed_on': REVIEWED,
+            }, 200 if ready else 503)
         if path == '/api/documents':
             return self.respond({'metadata': CORPUS['metadata'], 'documents': CORPUS['documents']})
         if path.startswith('/documents/'):

@@ -77,6 +77,12 @@ All files contain complete runnable code in the workspace; no placeholders or om
 
 ## API contract
 
+`GET /api/health` returns HTTP 200 with `status: "ok"`, `ready: true`, and
+the configured engine mode (`local` or `openai`) when the engine is loaded.
+If the engine is unavailable, it returns HTTP 503 with `status: "unavailable"`,
+`ready: false`, and `mode: null`. This checks local engine readiness; it does
+not call OpenAI or verify external-service availability.
+
 ```sh
 curl http://127.0.0.1:8000/api/ask \
   -H 'Content-Type: application/json' \
