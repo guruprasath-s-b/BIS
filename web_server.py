@@ -50,7 +50,7 @@ class Handler(BaseHTTPRequestHandler):
         self.respond({'error': 'Not found'}, 404)
 
     def do_POST(self):
-        if self.path != '/api/ask':
+        if urlparse(self.path).path != '/api/ask':
             return self.respond({'error': 'Not found'}, 404)
         try:
             if self.headers.get('Transfer-Encoding'):

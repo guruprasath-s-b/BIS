@@ -43,6 +43,11 @@ class WebTests(unittest.TestCase):
         for query in ['', 'a', 'x' * 1501, ['invalid']]:
             self.assertEqual(self.request('/api/ask', {'query': query})[0], 400)
 
+    def test_ask_ignores_query_string(self):
+        status, result = self.request('/api/ask?source=browser', {'query': 'gold jewellery'})
+        self.assertEqual(status, 200)
+        self.assertTrue(result['citations'])
+
     def test_service_and_language_scope(self):
         for query in ['hallmarking requirements', 'सर्जिकल उपकरण']:
             status, result = self.request('/api/ask', {'query': query})
