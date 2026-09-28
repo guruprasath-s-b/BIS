@@ -1,7 +1,6 @@
 import json
 import re
 from pathlib import Path
-from pypdf import PdfReader
 
 
 def clean_text(text: str) -> str:
@@ -21,6 +20,10 @@ def clean_text(text: str) -> str:
 
 def chunk_text(text: str, max_chunk_size: int = 500, overlap: int = 100):
     """Split text into overlapping semantic passages."""
+    if max_chunk_size <= 0:
+        raise ValueError("max_chunk_size must be positive")
+    if overlap < 0 or overlap >= max_chunk_size:
+        raise ValueError("overlap must be non-negative and smaller than max_chunk_size")
     words = text.split()
     if not words:
         return []
@@ -38,6 +41,8 @@ def chunk_text(text: str, max_chunk_size: int = 500, overlap: int = 100):
 
 
 def extract_all_documents(pdf_dir: Path, output_file: Path):
+    from pypdf import PdfReader
+
     pdf_files = sorted(list(pdf_dir.glob("*.pdf")))
     print(f"Extracting text from {len(pdf_files)} PDF files in {pdf_dir}...")
 
