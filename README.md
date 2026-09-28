@@ -45,6 +45,7 @@ This is an independently built hackathon application and a foundation for furthe
 
    ```sh
    BIS_OFFLINE=1 .venv/bin/python -m unittest test_web.py
+   .venv/bin/python -m unittest test_extract_corpus.py
    .venv/bin/python verify_ps26107.py
    BIS_OFFLINE=1 .venv/bin/python test_model.py
    node --check web/app.js
@@ -68,8 +69,9 @@ This is an independently built hackathon application and a foundation for furthe
 - `ai_client.py`: `.env` configuration and optional OpenAI HTTP/JSON adapter; no OpenAI SDK dependency.
 - `web_server.py`: `/api/ask`, `/api/documents`, `/api/health`, input validation, bounded concurrent inference, allowlisted static/PDF serving and response headers.
 - `web/index.html`, `web/app.js`, `web/style.css`: existing responsive interface and document library, four quick-action pills, safe Markdown subset, official citation chips/action links, copy, optional browser speech recognition and synthesis, 12 output-language choices.
+- `extract_corpus.py`: PDF text cleaning and overlapping chunk extraction with validation for chunk size and overlap settings.
 - `.env.example`, `requirements.txt`: configuration and runtime dependencies.
-- `verify_ps26107.py`, `test_web.py`: new capability/adapter checks and upgraded endpoint regression tests.
+- `verify_ps26107.py`, `test_web.py`, `test_extract_corpus.py`: capability, adapter, endpoint and corpus chunk regression tests.
 
 All files contain complete runnable code in the workspace; no placeholders or omitted implementation sections need pasting.
 
